@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import MoveButton from '../../MoveButton/MoveButton';
+import { MoveActionProps } from './types';
 
-const MoveForm = () => {
+const MoveAction = ({ setError, setMessages }: MoveActionProps) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
@@ -25,9 +26,9 @@ const MoveForm = () => {
       <input type='number' id='moveX' onChange={handleX} value={x} />
       <label htmlFor='moveY'>Y</label>
       <input type='number' id='moveY' onChange={handleY} />
-      <MoveButton x={x} y={y} />
+      <MoveButton x={x} y={y} setError={setError} setMessages={setMessages} />
     </form>
   );
 };
 
-export default MoveForm;
+export default MoveAction;
