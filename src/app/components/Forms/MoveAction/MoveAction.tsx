@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import MoveButton from '../../MoveButton/MoveButton';
-import { MoveActionProps } from './types';
+import MoveButton from '../../Buttons/MoveButton/MoveButton';
+import { ActionProps } from './types';
 
-const MoveAction = ({ setError, setMessages }: MoveActionProps) => {
+const MoveAction = ({ setError, setMessages, setCooldown }: ActionProps) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
@@ -26,7 +26,13 @@ const MoveAction = ({ setError, setMessages }: MoveActionProps) => {
       <input type='number' id='moveX' onChange={handleX} value={x} />
       <label htmlFor='moveY'>Y</label>
       <input type='number' id='moveY' onChange={handleY} />
-      <MoveButton x={x} y={y} setError={setError} setMessages={setMessages} />
+      <MoveButton
+        x={x}
+        y={y}
+        setError={setError}
+        setMessages={setMessages}
+        setCooldown={setCooldown}
+      />
     </form>
   );
 };

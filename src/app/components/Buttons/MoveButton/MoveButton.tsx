@@ -4,23 +4,32 @@ import { CHARACTER_NAME } from '@/app/constants/characters';
 import { headers } from '@/app/constants/api';
 import ActionButton from '../ActionButton/ActionButton';
 import { move } from '../ActionButton/actions';
-import { MoveActionProps } from '../Forms/MoveAction/types';
+import { ActionProps } from '../../Forms/MoveAction/types';
 
-interface MovebuttonProps extends MoveActionProps {
+interface MovebuttonProps extends ActionProps {
   x: number;
   y: number;
 }
 
-const MoveButton = ({ setError, setMessages, x, y }: MovebuttonProps) => {
+const MoveButton = ({
+  setError,
+  setCooldown,
+  setMessages,
+  x,
+  y,
+}: MovebuttonProps) => {
   const moveAction = async () => {
-    const { errorMessage, messages } = await move({
+    const { errorMessage, cooldownSeconds, messages } = await move({
       CHARACTER_NAME,
       headers,
       x,
       y,
     });
-    console.log({ errorMessage, messages });
+
+    console.log({ cooldownSeconds });
+
     if (errorMessage) setError(errorMessage);
+    if (cooldownSeconds) setCooldown(cooldownSeconds);
     if (messages.length) setMessages(messages);
   };
 

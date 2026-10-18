@@ -10,6 +10,7 @@ interface MoveProps extends ActionProps {
 
 interface ActionReturn {
   errorMessage: string;
+  cooldownSeconds?: number;
   messages: string[];
 }
 
@@ -21,8 +22,9 @@ const move = async ({
 }: MoveProps): Promise<ActionReturn> => {
   const body = JSON.stringify({ x, y });
   const url = `https://api.artifactsmmo.com/my/${CHARACTER_NAME}/action/move`;
-  let messages: string[] = [];
+  const messages: string[] = [];
   let errorMessage = '';
+  let cooldownSeconds = 0;
 
   try {
     const response = await fetch(url, { method: 'POST', headers, body });
@@ -35,16 +37,17 @@ const move = async ({
       `✅ Moved to (${destination.x}, ${destination.y}) on ${destination.name}`,
     );
     console.log(`⏳ Cooldown started: ${cooldown.total_seconds} seconds`);
-    messages = [
+    messages.push(
       `✅ Moved to (${destination.x}, ${destination.y}) on ${destination.name}`,
-      `⏳ Cooldown started: ${cooldown.total_seconds} seconds`,
-    ];
+    );
+    messages.push(`⏳ Cooldown started: ${cooldown.total_seconds} seconds`);
+    cooldownSeconds = cooldown.total_seconds;
   } catch (error) {
     console.error('❌ ' + error);
     errorMessage = '❌ ' + error;
   }
 
-  return { errorMessage, messages };
+  return { errorMessage, cooldownSeconds, messages };
 };
 
 const fight = async ({
@@ -53,6 +56,7 @@ const fight = async ({
 }: ActionProps): Promise<ActionReturn> => {
   const messages: string[] = [];
   let errorMessage = '';
+  let cooldownSeconds = 0;
   const url = `https://api.artifactsmmo.com/my/${CHARACTER_NAME}/action/fight`;
 
   try {
@@ -75,6 +79,7 @@ const fight = async ({
       `⚔️  XP gained: ${fightStats.xp} | HP remaining: ${fightStats.final_hp}`,
     );
     messages.push(`⏳ Cooldown started: ${cooldown.total_seconds} seconds`);
+    cooldownSeconds = cooldown.total_seconds;
 
     if (fightStats.drops && fightStats.drops.length > 0) {
       const dropsStr = fightStats.drops
@@ -88,7 +93,7 @@ const fight = async ({
     errorMessage = '❌ ' + error;
   }
 
-  return { errorMessage, messages };
+  return { cooldownSeconds, errorMessage, messages };
 };
 const rest = async ({
   CHARACTER_NAME,
@@ -97,6 +102,7 @@ const rest = async ({
   const url = `https://api.artifactsmmo.com/my/${CHARACTER_NAME}/action/rest`;
   const messages: string[] = [];
   let errorMessage = '';
+  let cooldownSeconds = 0;
 
   try {
     const response = await fetch(url, { method: 'POST', headers });
@@ -114,12 +120,13 @@ const rest = async ({
     messages.push(`🛏️  Rested and restored ${hp_restored} HP.`);
     messages.push(`❤️  Current HP: ${hp}/${max_hp}`);
     messages.push(`⏳ Cooldown started: ${cooldown.total_seconds} seconds`);
+    cooldownSeconds = cooldown.total_seconds;
   } catch (error) {
     console.error('❌ ' + error);
     errorMessage = '❌ ' + error;
   }
 
-  return { errorMessage, messages };
+  return { cooldownSeconds, errorMessage, messages };
 };
 
 const gather = async ({
@@ -129,6 +136,7 @@ const gather = async ({
   const url = `https://api.artifactsmmo.com/my/${CHARACTER_NAME}/action/gathering`;
   const messages: string[] = [];
   let errorMessage = '';
+  let cooldownSeconds = 0;
 
   try {
     const response = await fetch(url, { method: 'POST', headers });
@@ -148,12 +156,13 @@ const gather = async ({
     messages.push(`🪓 Gathered successfully! Gained: ${dropsStr}`);
     messages.push(`🌟 ${details.xp} Woodcutting XP gained.`);
     messages.push(`⏳ Cooldown started: ${cooldown.total_seconds} seconds`);
+    cooldownSeconds = cooldown.total_seconds;
   } catch (error) {
     console.error('❌ ' + error);
     errorMessage = '❌ ' + error;
   }
 
-  return { errorMessage, messages };
+  return { errorMessage, cooldownSeconds, messages };
 };
 
 interface UnequipProps extends ActionProps {
