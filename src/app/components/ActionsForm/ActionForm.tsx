@@ -1,17 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import MoveAction from '../Forms/MoveAction/MoveAction';
 import FightAction from '../Forms/FightAction/FightAction';
 import RestAction from '../Forms/RestAction.tsx/RestAction';
 import Cooldown from '../Cooldown/Cooldown';
+import GatherAction from '../Forms/GatherAction/GatherAction';
 
 const ActionsForm = () => {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState('');
   const [cooldown, setCooldown] = useState(0);
-
-  useEffect(() => console.log(cooldown), [cooldown]);
 
   return (
     <div>
@@ -30,6 +29,11 @@ const ActionsForm = () => {
         setCooldown={setCooldown}
       />
       <RestAction
+        setError={setError}
+        setMessages={setMessages}
+        setCooldown={setCooldown}
+      />
+      <GatherAction
         setError={setError}
         setMessages={setMessages}
         setCooldown={setCooldown}

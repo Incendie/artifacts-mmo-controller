@@ -3,7 +3,7 @@ import { ActionProps } from '../MoveAction/types';
 
 const FightAction = ({ setError, setCooldown, setMessages }: ActionProps) => {
   return (
-    <form action='moveCharacter'>
+    <form action='fightMonster'>
       <FightButton
         setError={setError}
         setMessages={setMessages}

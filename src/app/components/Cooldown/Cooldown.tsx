@@ -8,15 +8,9 @@ interface CooldownProps {
 
 const Cooldown = ({ cooldown }: CooldownProps) => {
   const [secondsLeft, setSecondsLeft] = useState(cooldown);
-  console.log({ cooldown });
-  useEffect(
-    () => console.log('asdf', cooldown, secondsLeft),
-    [cooldown, secondsLeft],
-  );
 
   useLayoutEffect(() => {
     let countdown: NodeJS.Timeout;
-    console.log('effect', secondsLeft);
     if (secondsLeft > 0) {
       countdown = setInterval(() => {
         setSecondsLeft(prev => prev - 1);
@@ -32,6 +26,7 @@ const Cooldown = ({ cooldown }: CooldownProps) => {
 
   useEffect(() => {
     if (cooldown) {
+      // TODO: fix use of setter in effect
       //eslint-disable-next-line react-hooks/set-state-in-effect
       setSecondsLeft(cooldown);
     }

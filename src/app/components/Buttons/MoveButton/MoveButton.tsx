@@ -26,8 +26,6 @@ const MoveButton = ({
       y,
     });
 
-    console.log({ cooldownSeconds });
-
     if (errorMessage) setError(errorMessage);
     if (cooldownSeconds) setCooldown(cooldownSeconds);
     if (messages.length) setMessages(messages);
