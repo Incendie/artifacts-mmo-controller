@@ -145,10 +145,12 @@ const gather = async ({
     if (data.error) throw new Error(data.error.message);
 
     const { cooldown, details } = data.data;
+
     const dropsStr = details.items
       .map(i => `${i.quantity}x ${i.code}`)
       .join(', ');
 
+    // TODO: Add XP proper XP type in messages
     console.log(`🪓 Gathered successfully! Gained: ${dropsStr}`);
     console.log(`🌟 ${details.xp} Woodcutting XP gained.`);
     console.log(`⏳ Cooldown started: ${cooldown.total_seconds} seconds`);
